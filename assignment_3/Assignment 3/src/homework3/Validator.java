@@ -30,7 +30,8 @@ public class Validator {
 		}
 		
 		for(int line = 0; line < filteredData.size(); line++) {
-			braceCheck(filteredData.get(line),line);
+			String quoteFilteredLine = quoteCheck();
+			braceCheck(quoteFilteredLine,line);
 			//quoteCheck();
 		}
 		//validity
