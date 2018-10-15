@@ -5,6 +5,7 @@ import java.util.Stack;
 
 public class Validator {
 	Stack<Character> braceTracker;
+	Stack<Character> quoteTracker;
 	boolean isCommented;
 	
 	public Validator() {
@@ -28,12 +29,14 @@ public class Validator {
 			System.out.println(str);
 		}
 		
-//		for(Line l: data) {
-//			braceCheck();
-//			quoteCheck();
-//		}
-//		//validity
-//		braceTracker.isEmpty() => success
+		for(String line : filteredData) {
+			braceCheck(line);
+			//quoteCheck();
+		}
+		//validity
+		if(isBraceTrackerEmpty() && isQuoteTrackerEmpty()) {
+			System.out.println("SUCCESS: Valid syntax!");
+		}
 	}
 	
 	private List<String> filterComments(List<String> fileData){
@@ -63,7 +66,7 @@ public class Validator {
 						isCommented = false;
 						j++;
 					}else {
-						System.out.println("Line "+ index + ": "+ " Faulty closing comment. Please remove it.");
+						System.out.println("Line "+ index + ": Faulty closing comment. Please remove it.");
 						return null;
 					}
 				}
@@ -73,14 +76,33 @@ public class Validator {
 		return fileData;
 	}
 	
-	private void braceCheck(String[][] filteredData) {
+	private void braceCheck(String filteredDataLine, int lineNum) {
+		final String opening = "({[";
+		final String closing = ")}]";
+		for(char ch : filteredDataLine.toCharArray()) {
+			if(opening.indexOf(ch) != -1)
+				braceTracker.push(ch);
+			else if(closing.indexOf(ch) != -1) {
+				if(braceTracker.isEmpty())
+					System.out.println("Line "+ lineNum + ": Faulty closing brace '" + ch + "' .");
+				if(closing.indexOf(ch) ! = opening.indexOf(ch)) {
+					
+				}
+			}
+		}
+	}
+	
+	private void quoteCheck(String filteredDataLine) {
 		
 	}
 	
-	private void quoteCheck(String[][] filteredData) {
-		
+	private boolean isBraceTrackerEmpty() {
+		return braceTracker.size() == 0;
 	}
 	
+	private boolean isQuoteTrackerEmpty() {
+		return quoteTracker.size() == 0;
+	}
 	
 }
 
