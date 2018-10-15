@@ -29,8 +29,8 @@ public class Validator {
 			System.out.println(str);
 		}
 		
-		for(String line : filteredData) {
-			braceCheck(line);
+		for(int line = 0; line < filteredData.size(); line++) {
+			braceCheck(filteredData.get(line),line);
 			//quoteCheck();
 		}
 		//validity
@@ -49,7 +49,7 @@ public class Validator {
 				if(!isCommented) {
 					tempLine.append(charArr[j]);
 				}
-				if(charArr[j] == '/' && charArr[j+1] == '/') {
+				if(j<charArr.length-1 && charArr[j] == '/' && charArr[j+1] == '/') {
 					if(j == 0) {
 						tempLine.setLength(0);
 					}else {
@@ -57,11 +57,11 @@ public class Validator {
 							tempLine.deleteCharAt(j);
 					}
 					break;
-				}else if(charArr[j] == '/' && charArr[j+1] == '*' && !isCommented) {
+				}else if(j<charArr.length-1 && charArr[j] == '/' && charArr[j+1] == '*' && !isCommented) {
 					isCommented = true;
 					tempLine.deleteCharAt(j);
 					j++;
-				}else if(charArr[j] == '*' && charArr[j+1] == '/') {
+				}else if(j<charArr.length-1 && charArr[j] == '*' && charArr[j+1] == '/') {
 					if(isCommented) {
 						isCommented = false;
 						j++;
@@ -69,6 +69,8 @@ public class Validator {
 						System.out.println("Line "+ index + ": Faulty closing comment. Please remove it.");
 						return null;
 					}
+				}else {
+					//check
 				}
 			}
 			fileData.set(index, tempLine.toString());
@@ -79,14 +81,24 @@ public class Validator {
 	private void braceCheck(String filteredDataLine, int lineNum) {
 		final String opening = "({[";
 		final String closing = ")}]";
-		for(char ch : filteredDataLine.toCharArray()) {
+		char[] charArr = filteredDataLine.toCharArray();
+		for(int i=0; i<charArr.length; i++) {
+			char ch = charArr[i];
+			//commented brace handling
+			if(i<charArr.length-1 && 
+					Character.compare(ch, '\\') == 0 && 
+					closing.indexOf(charArr[i+1]) != -1 || opening.indexOf(charArr[i+1]) != -1){
+				i++;
+				continue;
+			}
+					
 			if(opening.indexOf(ch) != -1)
 				braceTracker.push(ch);
 			else if(closing.indexOf(ch) != -1) {
 				if(braceTracker.isEmpty())
 					System.out.println("Line "+ lineNum + ": Faulty closing brace '" + ch + "' .");
-				if(closing.indexOf(ch) ! = opening.indexOf(ch)) {
-					
+				if(closing.indexOf(ch) != opening.indexOf(braceTracker.peek())) {
+					System.out.println("Line "+ lineNum + ": Brace mismatch for '" + ch + "' and '" + braceTracker.pop() + "' .");
 				}
 			}
 		}
