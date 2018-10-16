@@ -1,0 +1,8 @@
+					hello
+					abcd
+					;'\''+'"' ""
+					System.out.println("Line "+ lineNum + ": Brace mismatch for '" + ch + "\"' and '" + braceTracker.pop() + "' .");
+					System.out.println("Line "+ lineNum + ": Brace mismatch for '" + ch + "\"' and '" + braceTracker.pop() + "' .");
+					System.out.println("Line "+ lineNum + ": Brace mismatch for '" + ch + "\"' and '" + braceTracker.pop() + "' .");
+					System.out.println("Line "+ lineNum + ": Brace mismatch for '" + ch + "\"' and '" + braceTracker.pop() + "' .");
+					System.out.println("Line "+ lineNum + ": Brace mismatch for '" + ch + "\"' and '" + braceTracker.pop() + "' ."){};

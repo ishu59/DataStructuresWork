@@ -1,0 +1,39 @@
+private String quoteCheck(String filteredDataLine) {
+		char[] charArrdata = filteredDataLine.toCharArray();
+		int firstQuote = filteredDataLine.indexOf("\"");
+
+		quoteTracker = new Stack<>();
+		StringBuilder sb = new StringBuilder();
+		int i = 0;
+		if (firstQuote < 0) {
+			return filteredDataLine;
+		} else {
+			for (i = 0; i < firstQuote; i++) {
+				sb.append(charArrdata[i]);
+			}
+
+			quoteTracker.add(charArrdata[firstQuote]);
+
+			for (i = firstQuote + 1; i < charArrdata.length; i++) {
+				if (charArrdata[i] == '\\') {
+					i += 1;
+					continue;
+				} else if (charArrdata[i] == '"') {
+					if (!quoteTracker.isEmpty() && quoteTracker.peek() == '"') {
+						quoteTracker.pop();
+						sb.append("\"");
+					} else {
+						quoteTracker.push(charArrdata[i]);
+					}
+				}
+				if(quoteTracker.isEmpty()) {
+					sb.append(charArrdata[i]);
+				}
+			}
+			if(!quoteTracker.isEmpty()) {
+				this.hasError = true;
+			}
+			
+			return sb.toString();
+		}
+	}

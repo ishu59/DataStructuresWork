@@ -9,7 +9,7 @@ import java.util.List;
 public class Main {
 	public static void main(String[] args) {
 		Validator doit = new Validator();
-		String file="/Users/alekhyamanem/Desktop/test.java";
+		String file="C:\\Users\\ISHUHOME\\IdeaProjects\\DSMasterProj\\DataStructuresWork\\assignment_3\\Assignment 3\\src\\homework3\\testcase\\testcase3.txt";
 		List<String> datain = new ArrayList<>();
 		
 		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -22,6 +22,9 @@ public class Main {
 			System.out.println("IO error");
 			//throw new IOException("IO error in main");
 		}
+//		for(String s:datain) {
+//			System.out.println(s.toString());
+//		}
 		doit.scan(datain);
 		//print
 //		for(String str: datain) {

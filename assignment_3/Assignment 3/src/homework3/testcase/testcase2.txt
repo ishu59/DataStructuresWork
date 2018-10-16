@@ -1,0 +1,9 @@
+    	if (i==arraysize-1) {
+		    		int newsize=arraysize*2;
+		    		String[] second=new String[newsize];
+		    		for (int j=0; j<arraysize; j++) {
+		    			second[j]=datain[j];
+		    		}
+		    		arraysize=newsize;
+		    		datain=second;
+		    	}

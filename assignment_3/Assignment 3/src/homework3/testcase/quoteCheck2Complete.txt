@@ -11,12 +11,11 @@ public class Validator {
 	Stack<Character> quoteTracker;
 	boolean isCommented;
 	boolean hasError = false;
-	StringBuilder completeCode;
 
 	public Validator() {
-		this.braceTracker = new Stack<>();
-		this.completeCode = new StringBuilder();
-		this.isCommented = false;
+		braceTracker = new Stack<>();
+
+		isCommented = false;
 	}
 
 	public void scan(List<String> fileData) {
@@ -42,29 +41,21 @@ public class Validator {
 			if (this.hasError) {
 				System.out.println("Exception in Quotes on line: " + (line + 1));
 				break;
-			} else {
-				this.completeCode.append(quoteFilteredLine);
 			}
 			// braceCheck(quoteFilteredLine,line);
 
 		}
 
-		// Test
-		// validity
-		System.out.println(this.completeCode);
-		this.braceChecker2(this.completeCode.toString().toCharArray());
-		if (this.hasError) {
-			System.out.println("Exception in Braces ");
-		} else {
-			System.out.println("Everything looks perfect!!!");
-		}
-
 		/*
-		 * Actual //validity braceCheck(quoteFilteredLine,line);
-		 * if(isBraceTrackerEmpty() && isQuoteTrackerEmpty()) {
+		 * Actual //validity if(isBraceTrackerEmpty() && isQuoteTrackerEmpty()) {
 		 * System.out.println("SUCCESS: Valid syntax!"); }
 		 */
 
+		// Test
+		// validity
+		if (isBraceTrackerEmpty() && !hasError) {
+			System.out.println("SUCCESS: Valid syntax!");
+		}
 	}
 
 	private List<String> filterComments(List<String> fileData) {
@@ -134,6 +125,8 @@ public class Validator {
 
 	private String quoteCheck(String filteredDataLine) {
 		char[] charArrdata = filteredDataLine.toCharArray();
+		//int firstQuote = filteredDataLine.indexOf("\"");
+
 		quoteTracker = new Stack<>();
 		StringBuilder sb = new StringBuilder();
 		int i = 0;
@@ -151,13 +144,11 @@ public class Validator {
 				}
 			} else if (quoteTracker.isEmpty() && charArrdata[i] == '\'') {
 				// Removing element inside single quote
-				// Single quotes will need to have something between them else invalid java
-				// syntax
-				// Single can only have one element between them (2 with \) else invalid java
-				// syntax
+				// Single quotes will need to have something between them  else invalid java syntax
+				// Single can only have one element between them (2 with \) else invalid java syntax
 				// Single Quote is char so either index + 2 or (when index+1 = \) index + 3 will
 				// be another single Quote
-
+				
 				if (i + 2 >= charArrdata.length) {
 					this.hasError = true;
 					return "";
@@ -199,50 +190,4 @@ public class Validator {
 		return quoteTracker.size() == 0;
 	}
 
-	// Ashish Test code
-
-	private boolean matchBraces(char elem1, char elem2) {
-		if (elem1 == '(' && elem2 == ')')
-			return true;
-		else if (elem1 == '{' && elem2 == '}')
-			return true;
-		else if (elem1 == '[' && elem2 == ']')
-			return true;
-		else
-			return false;
-	}
-
-	private void braceChecker2(char exp[]) {
-
-		Stack<Character> st = new Stack<>();
-
-		for (int i = 0; i < exp.length; i++) {
-
-			if (exp[i] == '{' || exp[i] == '(' || exp[i] == '[')
-				st.push(exp[i]);
-
-			if (exp[i] == '}' || exp[i] == ')' || exp[i] == ']') {
-				if (st.isEmpty()) {
-					this.hasError = true;
-					return;
-				}
-
-				else if (!matchBraces(st.pop(), exp[i])) {
-					this.hasError = true;
-					return;
-				}
-			}
-
-		}
-
-		if (st.isEmpty()) {
-			this.hasError = false;
-			return;
-		} else {
-			this.hasError = true;
-			return;
-		}
-	}
-
-	// Ashish Test code ends
 }
